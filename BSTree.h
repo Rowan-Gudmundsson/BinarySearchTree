@@ -8,8 +8,7 @@
 //
 //--------------------------------------------------------------------
 
-#ifndef BSTREE_H
-#define BSTREE_H
+#pragma once
 
 #include <stdexcept>
 #include <iostream>
@@ -68,11 +67,14 @@ class BSTree                                     // KeyType : key field
     // Recursive helpers for the public member functions -- insert
     // prototypes of these functions here.
     void showHelper      ( BSTreeNode *p, int level ) const;
-
+    void assignHelper(BSTreeNode*&, BSTreeNode*);
+    void insertHelper(BSTreeNode*&, const DataType&);
+    bool retrieveHelper(BSTreeNode*, const KeyType&, DataType&) const;
+    bool removeHelper(BSTreeNode*&, const KeyType&);
+    void clearHelper(BSTreeNode*&);
 
     // Data member
     BSTreeNode *root;   // Pointer to the root node
 };
 
-#endif	// define BSTREE_H
 

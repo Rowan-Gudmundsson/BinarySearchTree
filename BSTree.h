@@ -13,6 +13,8 @@
 #include <stdexcept>
 #include <iostream>
 
+#define MAX(a, b) ((a) > (b)) ? (a) : (b)
+
 using namespace std;
 
 template < typename DataType, class KeyType >    // DataType : tree data item
@@ -23,7 +25,7 @@ class BSTree                                     // KeyType : key field
     // Constructor
     BSTree ();                         // Default constructor
     BSTree ( const BSTree<DataType,KeyType>& other );   // Copy constructor
-    BSTree& operator= ( const BSTree<DataType,KeyType>& other );
+    BSTree& operator = ( const BSTree<DataType,KeyType>& other );
 						  // Overloaded assignment operator
 
     // Destructor
@@ -47,7 +49,7 @@ class BSTree                                     // KeyType : key field
     // In-lab operations
     int getHeight () const;                       // Height of tree
     int getCount () const;			  // Number of nodes in tree
-    void writeLessThan ( const KeyType& searchKey ) const; // Output keys < searchKey
+    //void writeLessThan ( const KeyType& searchKey ) const; // Output keys < searchKey
 
   protected:
 
@@ -66,13 +68,15 @@ class BSTree                                     // KeyType : key field
 
     // Recursive helpers for the public member functions -- insert
     // prototypes of these functions here.
-    void showHelper      ( BSTreeNode *p, int level ) const;
-    void assignHelper(BSTreeNode*&, BSTreeNode*);
-    void insertHelper(BSTreeNode*&, const DataType&);
-    bool retrieveHelper(BSTreeNode*, const KeyType&, DataType&) const;
-    bool removeHelper(BSTreeNode*&, const KeyType&);
-    void clearHelper(BSTreeNode*&);
-
+    void showHelper ( BSTreeNode *p, int level ) const;
+    void assignHelper (BSTreeNode*&, BSTreeNode*);
+    void insertHelper (BSTreeNode*&, const DataType&);
+    bool retrieveHelper (BSTreeNode*, const KeyType&, DataType&) const;
+    bool removeHelper (BSTreeNode*&, const KeyType&);
+    void clearHelper (BSTreeNode*&);
+    int getCountHelper (BSTreeNode*) const;
+    int getHeightHelper (BSTreeNode*) const;
+    void writeKeysHelper (BSTreeNode*) const;
     // Data member
     BSTreeNode *root;   // Pointer to the root node
 };

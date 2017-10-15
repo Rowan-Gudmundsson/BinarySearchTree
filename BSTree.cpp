@@ -1,5 +1,19 @@
-﻿#include "BSTree.h"
+﻿/**
+ * @file BSTree.cpp
+ * @author Rowan Gudmundsson
+ * @date 10/15/17
+ **/
 
+#include "BSTree.h"
+
+/**
+ * \brief Constructor, sets root to NULL
+ *
+ * @param None, default constructor
+ * @return None, constructor
+ * @pre None
+ * @post Tree will be initialized
+ **/
 template <typename DataType, class KeyType>
 BSTree<DataType, KeyType>::BSTree () : root(NULL) {
 }                        
@@ -51,6 +65,9 @@ bool BSTree<DataType, KeyType>::remove ( const KeyType& deleteKey ) {
 template <typename DataType, class KeyType>
 void BSTree<DataType, KeyType>::writeKeys () const {
 
+	if(isEmpty()) return;
+
+	writeKeysHelper(root);
 }                   
 
 template <typename DataType, class KeyType>
@@ -90,17 +107,16 @@ void BSTree<DataType,KeyType>:: showStructure () const {
 template <typename DataType, class KeyType>  
 int BSTree<DataType, KeyType>::getHeight () const {
 
+	if(isEmpty()) return 0;
+
+	return getHeightHelper(root);
 }                  
 
 template <typename DataType, class KeyType>
 int BSTree<DataType, KeyType>::getCount () const {
 
+	return getCountHelper(root);
 }			 
-
-template <typename DataType, class KeyType>
-void BSTree<DataType, KeyType>::writeLessThan ( const KeyType& searchKey ) const {
-
-}
 
 template <typename DataType, class KeyType>
 BSTree<DataType, KeyType>::BSTreeNode::BSTreeNode ( const DataType &nodeDataItem, BSTreeNode *leftPtr, BSTreeNode *rightPtr ) {
@@ -207,12 +223,13 @@ bool BSTree<DataType, KeyType>::removeHelper(BSTreeNode*& node, const KeyType& d
 	else {
 
 		//Case 1
-		if(node->left == NULL && node->right == NULL) {
+		if((node->left == NULL) && (node->right == NULL)) {
 
 			delete node;
 			node = NULL;
 		}
-		if(node->right == NULL) {
+		//Case 2 (a)
+		else if(node->right == NULL) {
 
 			BSTreeNode* tmp = node;
 
@@ -220,7 +237,8 @@ bool BSTree<DataType, KeyType>::removeHelper(BSTreeNode*& node, const KeyType& d
 			delete tmp;
 			tmp = NULL;
 		}
-		if(node->left == NULL) {
+		//Case 2 (b)
+		else if(node->left == NULL) {
 
 			BSTreeNode* tmp = node;
 
@@ -228,6 +246,7 @@ bool BSTree<DataType, KeyType>::removeHelper(BSTreeNode*& node, const KeyType& d
 			delete tmp;
 			tmp = NULL;
 		}
+		//Case 3
 		else {
 
 			BSTreeNode* tmp = node->left;
@@ -269,4 +288,37 @@ void BSTree<DataType, KeyType>::clearHelper(BSTreeNode*& node) {
 
 	delete node;
 	node = NULL;
+}
+
+template <typename DataType, class KeyType>
+int BSTree<DataType, KeyType>::getCountHelper(BSTreeNode* node) const {
+
+	if(node == NULL) return 0;
+
+	return 1 + getCountHelper(node->left) + getCountHelper(node->right);
+}
+
+template <typename DataType, class KeyType>
+int BSTree<DataType, KeyType>::getHeightHelper(BSTreeNode* node) const {
+
+	if(node == NULL) return 0;
+
+	int leftHeight = getHeightHelper(node->left);
+	int rightHeight = getHeightHelper(node->right);
+
+	int max = MAX(leftHeight, rightHeight);
+
+	return max + 1;
+}
+
+template <typename DataType, class KeyType>
+void BSTree<DataType, KeyType>::writeKeysHelper(BSTreeNode* node) const{
+
+	if(node == NULL) return;
+
+	writeKeysHelper(node->left);
+
+	std::cout << node->dataItem.getKey() << ' ';
+
+	writeKeysHelper(node->right);
 }

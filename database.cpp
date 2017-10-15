@@ -44,7 +44,7 @@ struct IndexEntry
     int acctID;              // (Key) Account identifier
     long recNum;             // Record number
 
-    int key () const
+    int getKey () const
         { return acctID; }   // Return key field
 };
 

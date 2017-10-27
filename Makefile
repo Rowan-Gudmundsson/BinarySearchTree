@@ -1,10 +1,16 @@
-all: test9 BSTree
-	g++ -o test9 BSTree.o test9.o
+CPPFLAGS =
 
-test9: test9.cpp
-	g++ -c test9.cpp
+all: test9 db9
 
-BSTree: BSTree.cpp BSTree.h
-	g++ -c BSTree.cpp
+test9: test9.o 
+	g++ $(CPPFLAGS) -o test9 test9.o -std=c++98
 
-clean: rm *.o
+db9: database.o 
+	g++ $(CPPFLAGS) -o db9 database.o -std=c++98
+
+clean:
+	rm -f test9; rm -f test9.o; rm -f database; rm -f database.o
+	
+test9.o: test9.cpp BSTree.cpp BSTree.h config.h
+
+database.o: database.cpp BSTree.cpp BSTree.h

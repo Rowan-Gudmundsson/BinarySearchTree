@@ -68,6 +68,8 @@ void BSTree<DataType, KeyType>::writeKeys () const {
 	if(isEmpty()) return;
 
 	writeKeysHelper(root);
+
+	std::cout << std::endl;
 }                   
 
 template <typename DataType, class KeyType>

@@ -1,2 +1,8 @@
 *.o
 test9
+database
+db9
+*.pdf
+html
+latex
+Doxyfile

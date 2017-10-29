@@ -18,6 +18,16 @@ template <typename DataType, class KeyType>
 BSTree<DataType, KeyType>::BSTree () : root(NULL) {
 }                        
 
+/**
+ * \brief Copy Constructor, copies other into (*this)
+ *
+ * Utilises the assignment helper to traverse the tree and copy each item from other into this
+ *
+ * @param Other Tree 
+ * @return None, Constructor
+ * @pre None
+ * @post This will contain the data of other
+ **/
 template <typename DataType, class KeyType>
 BSTree<DataType, KeyType>::BSTree ( const BSTree<DataType,KeyType>& other ) : root(NULL) {
 
@@ -26,6 +36,16 @@ BSTree<DataType, KeyType>::BSTree ( const BSTree<DataType,KeyType>& other ) : ro
 	assignHelper(root, other.root);
 }  
 
+/**
+ * \brief Assigns other to this
+ * 
+ * Utilises the assignment helper to traverse the tree and copy each item from other into this
+ * 
+ * @param Other tree
+ * @return (*this) to allow a = b = c
+ * @pre None
+ * @post Other will be assigned to this
+ **/ 
 template <typename DataType, class KeyType>
 BSTree<DataType, KeyType>& BSTree<DataType, KeyType>::operator= ( const BSTree<DataType,KeyType>& other ) {
 
@@ -37,31 +57,81 @@ BSTree<DataType, KeyType>& BSTree<DataType, KeyType>::operator= ( const BSTree<D
 
 	return (*this);
 }
-						  
+
+/**
+ * \brief Destructor deallocates memory
+ * 
+ * Calls the clear() function
+ * 
+ * @param None
+ * @return None
+ * @pre None 
+ * @post Tree will be destructed
+ **/						  
 template <typename DataType, class KeyType> 
 BSTree<DataType, KeyType>::~BSTree () {
 
 	clear();
 }
 
+/** 
+ * \brief Inserts a data item into the tree
+ * 
+ * Utilises insertHelper, calling it with root
+ * 
+ * @param New Data to insert
+ * @return None, void function 
+ * @pre None 
+ * @post Tree will be that lil bit bigger
+ **/
 template <typename DataType, class KeyType> 
 void BSTree<DataType, KeyType>::insert ( const DataType& newDataItem ) {
 
 	insertHelper(root, newDataItem);
 }
 
+/**
+ * \brief Changes the dataItem passed into it to be the dataItem indicated by the search key
+ * 
+ * Utilises retreveHelper to first find the key and then equate the data items
+ *
+ * @param Search key and dataItem
+ * @return True if retrieved false if not 
+ * @pre Filled tree
+ * @post None, no change to class
+ **/
 template <typename DataType, class KeyType>
 bool BSTree<DataType, KeyType>::retrieve ( const KeyType& searchKey, DataType& searchDataItem ) const {
 
 	return retrieveHelper(root, searchKey, searchDataItem);
 }
 
+/**
+ * \brief Removes a node selected by search key from the tree
+ *
+ * Utilises the removeHelper() function to locate and delete the node
+ *
+ * @param Delete Key
+ * @return True if found and deleted, false if not
+ * @pre None
+ * @post
+ **/
 template <typename DataType, class KeyType>                                                
 bool BSTree<DataType, KeyType>::remove ( const KeyType& deleteKey ) {
 
 	return removeHelper(root, deleteKey);
 }          
 
+/**
+ * \brief Writes all keys in tree in acsending order
+ *
+ * Uses writeKeysHelper() function to print in-order
+ *
+ * @param None
+ * @return None, void function 
+ * @pre Keys in the tree
+ * @post None
+ **/
 template <typename DataType, class KeyType>
 void BSTree<DataType, KeyType>::writeKeys () const {
 
@@ -72,6 +142,16 @@ void BSTree<DataType, KeyType>::writeKeys () const {
 	std::cout << std::endl;
 }                   
 
+/**
+ * \brief Deallocates memory
+ * 
+ * Uses the clear helper function to do a post order deletion of the tree
+ * 
+ * @param None
+ * @return None, void function
+ * @pre None
+ * @post Empty tree
+ **/
 template <typename DataType, class KeyType>
 void BSTree<DataType, KeyType>::clear () {
 
@@ -80,6 +160,14 @@ void BSTree<DataType, KeyType>::clear () {
 	clearHelper(root);
 }                              
 
+/**
+ * \brief Checks if the tree is Empty
+ *
+ * @param None
+ * @return True if empty, false if not 
+ * @pre None
+ * @post None
+ **/
 template <typename DataType, class KeyType>   
 bool BSTree<DataType, KeyType>::isEmpty () const {
 
@@ -106,6 +194,16 @@ void BSTree<DataType,KeyType>:: showStructure () const {
     }
 }
 
+/** 
+ * \brief Finds the height of the tree
+ * 
+ * Uses getHeightHelper to traverse the tree
+ * 
+ * @param None 
+ * @return Height of the tree
+ * @pre None 
+ * @post None 
+ **/
 template <typename DataType, class KeyType>  
 int BSTree<DataType, KeyType>::getHeight () const {
 
@@ -114,12 +212,30 @@ int BSTree<DataType, KeyType>::getHeight () const {
 	return getHeightHelper(root);
 }                  
 
+/** 
+ * \brief Finds how many nodes are in the tree
+ * 
+ * Uses getCountHelper to traverse the tree
+ * 
+ * @param None
+ * @return Number of nodes in the tree
+ * @pre None 
+ * @post None
+ **/
 template <typename DataType, class KeyType>
 int BSTree<DataType, KeyType>::getCount () const {
 
 	return getCountHelper(root);
 }			 
 
+/** 
+ * \brief Node Constructor, sets data, left, and right to parameters passed
+ * 
+ * @param Data, left, and right
+ * @return None, constructor
+ * @pre None
+ * @post Node will contain information 
+ **/
 template <typename DataType, class KeyType>
 BSTree<DataType, KeyType>::BSTreeNode::BSTreeNode ( const DataType &nodeDataItem, BSTreeNode *leftPtr, BSTreeNode *rightPtr ) {
 
@@ -156,6 +272,14 @@ void BSTree<DataType,KeyType>:: showHelper ( BSTreeNode *p, int level ) const {
     }
 }
 
+/** 
+ * \brief Base case: otherNode is NULL, sets node = new node with otherNode data, recursively calls on left and right
+ *
+ * @param Node and Source node
+ * @return None, void function
+ * @pre None
+ * @post Node == otherNode
+ **/
 template <typename DataType, class KeyType>
 void BSTree<DataType, KeyType>::assignHelper(BSTreeNode*& node, BSTreeNode* otherNode) {
 
@@ -167,6 +291,18 @@ void BSTree<DataType, KeyType>::assignHelper(BSTreeNode*& node, BSTreeNode* othe
 	assignHelper(node->right, otherNode->right);
 
 }
+
+/**
+ * \brief Finds the place for new data and inserts it
+ * 
+ * If new data is smaller than current data recursively call left, if its bigger call right, 
+ * if its the same set this->data = newData
+ *
+ * @param this Node and new Data
+ * @return None, void function 
+ * @pre None
+ * @post Tree will have one more node
+ **/
 template <typename DataType, class KeyType>
 void BSTree<DataType, KeyType>::insertHelper(BSTreeNode*& node, const DataType& newDataItem) {
 
@@ -185,10 +321,18 @@ void BSTree<DataType, KeyType>::insertHelper(BSTreeNode*& node, const DataType& 
 	}
 	else {
 
-		node->dataItem.setKey(newDataItem.getKey());
+		node->dataItem = newDataItem;
 	}
 }
 
+/** 
+ * \brief Finds the item at key and sets search data to this->data
+ * 
+ * @param this Node, search key, search data
+ * @return True is found, false if not
+ * @pre None
+ * @post 
+ **/
 template <typename DataType, class KeyType>
 bool BSTree<DataType, KeyType>::retrieveHelper(BSTreeNode* node, const KeyType& searchKey, DataType& searchDataItem) const {
 
@@ -204,11 +348,23 @@ bool BSTree<DataType, KeyType>::retrieveHelper(BSTreeNode* node, const KeyType& 
 	}
 	else {
 
-		searchDataItem.setKey(node->dataItem.getKey());
+		searchDataItem = node->dataItem;
 		return true;
 	}
 }
 
+/** 
+ * \brief Finds the node, removes it based on a few cases
+ * 
+ * Finds the node by recursively calling either left or right; once found, (case one, no children) delete the node, equal it to NULL
+ * (case two, one child) point around the node, delete it (case three, two children) find the predecessor, copy that data to the node 
+ * being deleted, delete the predecessor using a trailing pointer.
+ *
+ * @param this Node, delete key 
+ * @return True if found, false if not
+ * @pre None
+ * @post One less Node
+ **/
 template <typename DataType, class KeyType>
 bool BSTree<DataType, KeyType>::removeHelper(BSTreeNode*& node, const KeyType& deleteKey) {
 
@@ -280,6 +436,14 @@ bool BSTree<DataType, KeyType>::removeHelper(BSTreeNode*& node, const KeyType& d
 	}
 }
 
+/**
+ * \brief If node is null, return, clear left, clear right, delete self
+ *
+ * @param this Node
+ * @return None, void function
+ * @pre None
+ * @post Empty Tree
+ **/
 template <typename DataType, class KeyType>
 void BSTree<DataType, KeyType>::clearHelper(BSTreeNode*& node) {
 
@@ -292,6 +456,14 @@ void BSTree<DataType, KeyType>::clearHelper(BSTreeNode*& node) {
 	node = NULL;
 }
 
+/** 
+ * \brief Walks through all node, if NULL return 0, else return 1 plus node in left plus nodes in right
+ *
+ * @param current Node
+ * @return Number of nodes
+ * @pre None
+ * @post None
+ **/
 template <typename DataType, class KeyType>
 int BSTree<DataType, KeyType>::getCountHelper(BSTreeNode* node) const {
 
@@ -300,6 +472,14 @@ int BSTree<DataType, KeyType>::getCountHelper(BSTreeNode* node) const {
 	return 1 + getCountHelper(node->left) + getCountHelper(node->right);
 }
 
+/** 
+ * \brief if NULL return 0, find the max of left subtree and right subtree, return 1 + max 
+ * 
+ * @param current Node
+ * @return Height of subtree
+ * @pre None 
+ * @post None
+ **/
 template <typename DataType, class KeyType>
 int BSTree<DataType, KeyType>::getHeightHelper(BSTreeNode* node) const {
 
@@ -313,6 +493,14 @@ int BSTree<DataType, KeyType>::getHeightHelper(BSTreeNode* node) const {
 	return max + 1;
 }
 
+/** 
+ * \brief In order traversal of the tree printing the keys as we go
+ * 
+ * @param current Node 
+ * @return None, void function 
+ * @pre None
+ * @post None
+ **/
 template <typename DataType, class KeyType>
 void BSTree<DataType, KeyType>::writeKeysHelper(BSTreeNode* node) const{
 
